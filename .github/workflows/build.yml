@@ -1,4 +1,4 @@
-name: Wii Build (Working)
+name: Wii Build
 
 on:
   push:
@@ -9,18 +9,18 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: devkitpro/devkitppc:latest
+      image: devkitpro/devkitpro:latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Verify devkitPro install
-        run: |
-          echo "DEVKITPRO=$DEVKITPRO"
-          ls /opt || true
-          ls $DEVKITPRO || true
+      - uses: actions/checkout@v4
 
       - name: Build
-        run: |
-          make
+        run: make
+
+      - name: Upload .dol
+        uses: actions/upload-artifact@v4
+        with:
+          name: wii-build
+          path: |
+            *.dol
+            *.elf
