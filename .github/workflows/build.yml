@@ -1,8 +1,8 @@
 name: Wii Build
 
 on:
-  push:
   workflow_dispatch:
+  push:
 
 jobs:
   build:
@@ -14,18 +14,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Wii packages
+      - name: Install Wii SDK
         run: |
           dkp-pacman -Sy --noconfirm
-          dkp-pacman -S --needed --noconfirm gamecube-dev
+          dkp-pacman -S --needed --noconfirm wii-dev
 
       - name: Build
-        run: make
+        run: |
+          make
 
-      - name: Upload build
+      - name: Show files
+        run: |
+          find . -name "*.dol"
+          find . -name "*.elf"
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: wii-build
           path: |
-            *.dol
-            *.elf
+            **/*.dol
+            **/*.elf
