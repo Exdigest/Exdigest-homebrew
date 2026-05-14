@@ -1,4 +1,4 @@
-name: Wii Build (Stable Docker)
+name: Wii Build (Fixed)
 
 on:
   push:
@@ -15,6 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Show devkitPro path (debug)
+        run: |
+          echo $DEVKITPRO
+          ls $DEVKITPRO/libogc
+
       - name: Build Wii homebrew
         run: |
           make
@@ -23,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: wii-build
-          path: "*.dol"    
+          path: "*.dol"
