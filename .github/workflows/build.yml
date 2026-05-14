@@ -1,34 +1,30 @@
 name: Wii Build
 
 on:
-  workflow_dispatch:
   push:
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     container:
-      image: devkitpro/devkitppc:latest
+      image: ghcr.io/devkitpro/devkitppc:latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Wii SDK
+      - name: Check SDK
         run: |
-          dkp-pacman -Sy --noconfirm
-          dkp-pacman -S --needed --noconfirm wii-dev
+          echo $DEVKITPRO
+          ls $DEVKITPRO
+          ls $DEVKITPRO/libogc || true
 
       - name: Build
         run: |
           make
 
-      - name: Show files
-        run: |
-          find . -name "*.dol"
-          find . -name "*.elf"
-
-      - name: Upload artifacts
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: wii-build
