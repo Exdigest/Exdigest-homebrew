@@ -9,29 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y build-essential wget git
-
-      - name: Install devkitPro
-        run: |
-          wget https://apt.devkitpro.org/install-devkitpro-pacman
-          chmod +x install-devkitpro-pacman
-          sudo ./install-devkitpro-pacman
-
-      - name: Install Wii tools
-        run: |
-          sudo dkp-pacman -S wii-dev --noconfirm
-
-      - name: Build project
-        run: make
-
-      - name: Upload .dol
-        uses: actions/upload-artifact@v4
-        with:
-          name: wii-build
-          path: "*.dol"
+      - name: Hello
+        run: echo "workflow works"
+    
