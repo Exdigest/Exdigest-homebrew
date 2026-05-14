@@ -1,16 +1,11 @@
-DEVKITPRO ?= /opt/devkitpro
-DEVKITPPC ?= $(DEVKITPRO)/devkitPPC
-
-include $(DEVKITPRO)/libogc/base_rules
-
 TARGET := boot
 BUILD  := build
 SOURCES := source
 
-LIBS := -logc -lwiiuse -lbte -lasnd -lmad -logg -lvorbisidec -lvorbis -lm
+LIBOGC := $(DEVKITPRO)/libogc
 
 CFLAGS := -O2 -mrvl -mcpu=750 -meabi -mhard-float
-
 LDFLAGS :=
 
-all: $(TARGET).dol
+all:
+	@echo "If this runs, toolchain exists"
