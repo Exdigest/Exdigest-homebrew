@@ -9,16 +9,15 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/devkitpro/devkitppc:latest
+      image: ghcr.io/devkitpro/devkitppc:20240505
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check SDK
+      - name: Show SDK
         run: |
           echo $DEVKITPRO
           ls $DEVKITPRO
-          ls $DEVKITPRO/libogc || true
 
       - name: Build
         run: |
