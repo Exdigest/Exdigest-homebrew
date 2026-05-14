@@ -9,15 +9,15 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/devkitpro/devkitppc:20240505
+      image: devkitpro/devkitppc
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Show SDK
+      - name: Install Wii SDK
         run: |
-          echo $DEVKITPRO
-          ls $DEVKITPRO
+          dkp-pacman -Sy --noconfirm
+          dkp-pacman -S --needed --noconfirm wii-dev
 
       - name: Build
         run: |
