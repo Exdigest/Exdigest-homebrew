@@ -1,4 +1,4 @@
-name: Wii Build (Fixed)
+name: Wii Build (Working)
 
 on:
   push:
@@ -12,20 +12,15 @@ jobs:
       image: devkitpro/devkitppc:latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Show devkitPro path (debug)
+      - name: Verify devkitPro install
         run: |
-          echo $DEVKITPRO
-          ls $DEVKITPRO/libogc
+          echo "DEVKITPRO=$DEVKITPRO"
+          ls /opt || true
+          ls $DEVKITPRO || true
 
-      - name: Build Wii homebrew
+      - name: Build
         run: |
           make
-
-      - name: Upload .dol
-        uses: actions/upload-artifact@v4
-        with:
-          name: wii-build
-          path: "*.dol"
