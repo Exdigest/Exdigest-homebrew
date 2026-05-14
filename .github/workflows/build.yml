@@ -1,4 +1,4 @@
-name: Wii Build
+name: Wii Build (Stable Docker)
 
 on:
   push:
@@ -8,37 +8,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    container:
+      image: devkitpro/devkitppc:latest
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Build Wii homebrew
         run: |
-          sudo apt update
-          sudo apt install -y build-essential git wget ca-certificates
-
-      - name: Install devkitPro (safe method)
-        run: |
-          sudo mkdir -p /opt/devkitpro
-          
-          wget https://apt.devkitpro.org/install-devkitpro-pacman
-          chmod +x install-devkitpro-pacman
-          sudo bash ./install-devkitpro-pacman || true
-
-      - name: Install Wii tools (fallback-safe)
-        run: |
-          export PATH=$PATH:/opt/devkitpro/pacman/bin || true
-          
-          if command -v dkp-pacman; then
-            dkp-pacman -S wii-dev --noconfirm
-          else
-            echo "pacman not available - build will skip"
-            exit 1
-          fi
-
-      - name: Build project
-        run: |
-          make || exit 1
+          make
 
       - name: Upload .dol
         uses: actions/upload-artifact@v4
