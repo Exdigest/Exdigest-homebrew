@@ -9,30 +9,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y build-essential wget git
+          sudo apt install -y build-essential git wget ca-certificates
 
-      - name: Install devkitPro
+      - name: Install devkitPro (safe method)
         run: |
+          sudo mkdir -p /opt/devkitpro
+          
           wget https://apt.devkitpro.org/install-devkitpro-pacman
           chmod +x install-devkitpro-pacman
-          sudo ./install-devkitpro-pacman
+          sudo bash ./install-devkitpro-pacman || true
 
-      - name: Install Wii tools
+      - name: Install Wii tools (fallback-safe)
         run: |
-          sudo dkp-pacman -S wii-dev --noconfirm
+          export PATH=$PATH:/opt/devkitpro/pacman/bin || true
+          
+          if command -v dkp-pacman; then
+            dkp-pacman -S wii-dev --noconfirm
+          else
+            echo "pacman not available - build will skip"
+            exit 1
+          fi
 
       - name: Build project
-        run: make
+        run: |
+          make || exit 1
 
       - name: Upload .dol
         uses: actions/upload-artifact@v4
         with:
           name: wii-build
-          path: "*.dol"
-    
+          path: "*.dol"    
