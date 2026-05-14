@@ -1,9 +1,16 @@
-TARGET		:= boot
-BUILD		:= build
-SOURCES		:= .
-DATA		:= .
-INCLUDES	:=
+DEVKITPRO ?= /opt/devkitpro
+DEVKITPPC ?= $(DEVKITPRO)/devkitPPC
 
-LIBS := -lpngu -lfat -lwiiuse -lbte -logc -lm
+include $(DEVKITPRO)/libogc/base_rules
 
-include $(DEVKITPPC)/wii_rules
+TARGET := boot
+BUILD  := build
+SOURCES := source
+
+LIBS := -logc -lwiiuse -lbte -lasnd -lmad -logg -lvorbisidec -lvorbis -lm
+
+CFLAGS := -O2 -mrvl -mcpu=750 -meabi -mhard-float
+
+LDFLAGS :=
+
+all: $(TARGET).dol
